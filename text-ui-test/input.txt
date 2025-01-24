@@ -1,0 +1,9 @@
+list
+todo buy groceries
+deadline submit report /by next Friday
+event team meeting /from Mon 2pm /to 4pm
+list
+mark 2
+unmark 2
+list
+bye
