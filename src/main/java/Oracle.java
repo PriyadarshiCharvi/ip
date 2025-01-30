@@ -1,3 +1,5 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 class Task {
@@ -86,8 +88,7 @@ class OracleException extends Exception {
 public class Oracle {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        Task[] tasks = new Task[100];
-        int taskCount = 0;
+        ArrayList<Task> tasks = new ArrayList<>();
 
         System.out.println("    ____________________________________________________________");
         System.out.println("    Hello! I'm Oracle");
@@ -99,15 +100,15 @@ public class Oracle {
                 String input = in.nextLine();
 
                 if (input.equals("list")) {
-                    if (taskCount == 0) {
+                    if (tasks.isEmpty()) {
                         System.out.println("    ____________________________________________________________");
                         System.out.println("    There are no tasks in your list yet.");
                         System.out.println("    ____________________________________________________________");
                     } else {
                         System.out.println("    ____________________________________________________________");
                         System.out.println("    Here are the tasks in your list:");
-                        for (int i = 0; i < taskCount; i++) {
-                            System.out.println("    " + (i + 1) + ". " + tasks[i]);
+                        for (int i = 0; i < tasks.size(); i++) {
+                            System.out.println("    " + (i + 1) + ". " + tasks.get(i));
                         }
                         System.out.println("    ____________________________________________________________");
                     }
@@ -116,13 +117,12 @@ public class Oracle {
                         throw new OracleException("OOPS!!! The description of a todo cannot be empty.");
                     }
                     String description = input.substring(5);
-                    tasks[taskCount] = new Todo(description);
+                    tasks.add(new Todo(description));
                     System.out.println("    ____________________________________________________________");
                     System.out.println("    Got it. I've added this task to the list:");
-                    System.out.println("    " + tasks[taskCount]);
-                    System.out.println("    Now you have " + (taskCount + 1) + " tasks in the list.");
+                    System.out.println("    " + tasks.get(tasks.size() - 1));
+                    System.out.println("    Now you have " + tasks.size() + " tasks in the list.");
                     System.out.println("    ____________________________________________________________");
-                    taskCount++;
                 } else if (input.startsWith("deadline")) {
                     String[] parts = input.substring(8).split("/by", 2);
                     if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
@@ -130,13 +130,12 @@ public class Oracle {
                     }
                     String description = parts[0].trim();
                     String by = parts[1].trim();
-                    tasks[taskCount] = new Deadline(description, by);
+                    tasks.add(new Deadline(description, by));
                     System.out.println("    ____________________________________________________________");
                     System.out.println("    Got it. I've added this deadline to the list:");
-                    System.out.println("    " + tasks[taskCount]);
-                    System.out.println("    Now you have " + (taskCount + 1) + " tasks in the list.");
+                    System.out.println("    " + tasks.get(tasks.size() - 1));
+                    System.out.println("    Now you have " + tasks.size() + " tasks in the list.");
                     System.out.println("    ____________________________________________________________");
-                    taskCount++;
                 } else if (input.startsWith("event")) {
                     String[] parts = input.substring(5).split("/from|/to", 3);
                     if (parts.length < 3 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
@@ -145,35 +144,48 @@ public class Oracle {
                     String description = parts[0].trim();
                     String from = parts[1].trim();
                     String to = parts[2].trim();
-                    tasks[taskCount] = new Event(description, from, to);
+                    tasks.add(new Event(description, from, to));
                     System.out.println("    ____________________________________________________________");
                     System.out.println("    Got it. I've added this event to the list:");
-                    System.out.println("    " + tasks[taskCount]);
-                    System.out.println("    Now you have " + (taskCount + 1) + " tasks in the list.");
+                    System.out.println("    " + tasks.get(tasks.size() - 1));
+                    System.out.println("    Now you have " + tasks.size() + " tasks in the list.");
                     System.out.println("    ____________________________________________________________");
-                    taskCount++;
+                } else if (input.startsWith("delete")) {
+                    if (tasks.isEmpty()) {
+                        throw new OracleException("There are no tasks to delete.");
+                    }
+                    int index = Integer.parseInt(input.substring(7)) - 1;
+                    if (index < 0 || index >= tasks.size()) {
+                        throw new OracleException("Invalid task number. Please enter a number between 1 and " + tasks.size());
+                    }
+                    Task removedTask = tasks.remove(index);
+                    System.out.println("    ____________________________________________________________");
+                    System.out.println("    Noted. I've removed this task:");
+                    System.out.println("      " + removedTask);
+                    System.out.println("    Now you have " + tasks.size() + " tasks in the list.");
+                    System.out.println("    ____________________________________________________________");
                 } else if (input.startsWith("mark")) {
-                    if (taskCount == 0) {
+                    if (tasks.isEmpty()) {
                         throw new OracleException("Looks like your task list is empty! Add your first task before marking anything as done.");
                     }
                     int index = Integer.parseInt(input.substring(5).trim()) - 1;
-                    if (index < 0 || index >= taskCount) {
-                        throw new OracleException("OOPS!!! Task number is invalid. Please enter a number between 1 and " + taskCount);
+                    if (index < 0 || index >= tasks.size()) {
+                        throw new OracleException("OOPS!!! Task number is invalid. Please enter a number between 1 and " + tasks.size());
                     }
-                        tasks[index].markDone();
+                        tasks.get(index).markDone();
                         System.out.println("    ____________________________________________________________");
                         System.out.println("    Great! I've marked this task as done:");
-                        System.out.println("    " + tasks[index]);
+                        System.out.println("    " + tasks.get(index));
                         System.out.println("    ____________________________________________________________");
                 } else if (input.startsWith("unmark")) {
                     int index = Integer.parseInt(input.substring(7)) - 1;
-                    if (index < 0 || index > taskCount) {
-                        throw new OracleException("OOPS!!! Task number is invalid. Please enter a number between 1 and " + taskCount);
+                    if (index < 0 || index > tasks.size()) {
+                        throw new OracleException("OOPS!!! Task number is invalid. Please enter a number between 1 and " + tasks.size());
                     }
-                        tasks[index].markUndone();
+                        tasks.get(index).markUndone();
                         System.out.println("    ____________________________________________________________");
                         System.out.println("    Alright, I've marked this task as not done yet:");
-                        System.out.println("    " + tasks[index]);
+                        System.out.println("    " + tasks.get(index));
                         System.out.println("    ____________________________________________________________");
                 } else if (input.equals("bye")) {
                     System.out.println("    ____________________________________________________________");
