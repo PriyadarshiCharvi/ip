@@ -1,16 +1,21 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+enum TaskType {
+    TODO, DEADLINE, EVENT;
+}
+
 class Task {
     private final String description;
+    private final TaskType type;
     private boolean isDone;
 
-    public Task(String description) {
+    public Task(String description, TaskType type) {
         if (description.isBlank()) {
             throw new IllegalArgumentException("Task description cannot be empty.");
         }
         this.description = description;
+        this.type = type;
         this.isDone = false;
     }
 
@@ -26,20 +31,24 @@ class Task {
         this.isDone = false;
     }
 
+    public TaskType getType() {
+        return type;
+    }
+
     @Override
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        String typeIcon = switch (type) {
+            case TODO -> "[T]";
+            case DEADLINE -> "[D]";
+            case EVENT -> "[E]";
+        };
+        return typeIcon + "[" + getStatusIcon() + "] " + description;
     }
 }
 
 class Todo extends Task {
     public Todo(String description) {
-        super(description);
-    }
-
-    @Override
-    public String toString() {
-        return "[T]" + super.toString();
+        super(description, TaskType.TODO);
     }
 }
 
@@ -47,7 +56,7 @@ class Deadline extends Task {
     private final String by;
 
     public Deadline(String description, String by) {
-        super(description);
+        super(description, TaskType.DEADLINE);
         if (by.isBlank()) {
             throw new IllegalArgumentException("Deadline date cannot be empty.");
         }
@@ -56,7 +65,7 @@ class Deadline extends Task {
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by + ")";
+        return super.toString() + " (by: " + by + ")";
     }
 }
 
@@ -65,7 +74,7 @@ class Event extends Task {
     private final String to;
 
     public Event(String description, String from, String to) {
-        super(description);
+        super(description, TaskType.EVENT);
         if (from.isBlank() || to.isBlank()) {
             throw new IllegalArgumentException("Event time cannot be empty.");
         }
@@ -75,7 +84,7 @@ class Event extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
+        return super.toString() + " (from: " + from + " to: " + to + ")";
     }
 }
 
