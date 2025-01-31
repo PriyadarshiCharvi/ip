@@ -4,6 +4,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 enum TaskType {
     TODO, DEADLINE, EVENT;
@@ -57,38 +60,83 @@ class Todo extends Task {
 }
 
 class Deadline extends Task {
-    private final String by;
+    private final LocalDateTime by;
+    private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
+    private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMM d yyyy, hh:mma");
+    private static final DateTimeFormatter STORAGE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
     public Deadline(String description, String by) {
         super(description, TaskType.DEADLINE);
         if (by.isBlank()) {
             throw new IllegalArgumentException("Deadline date cannot be empty.");
         }
+        try {
+            this.by = LocalDateTime.parse(by, INPUT_FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Date must be in format: d/M/yyyy HHmm (e.g., 2/12/2023 1800)");
+        }
+    }
+
+    public Deadline(String description, LocalDateTime by) {
+        super(description, TaskType.DEADLINE);
         this.by = by;
+    }
+
+    public LocalDateTime getDateTime() {
+        return by;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " (by: " + by + ")";
+        return super.toString() + " (by: " + by.format(OUTPUT_FORMATTER) + ")";
+    }
+
+    public String toStorageString() {
+        return by.format(STORAGE_FORMATTER);
     }
 }
 
 class Event extends Task {
-    private final String from;
-    private final String to;
+    private final LocalDateTime from;
+    private final LocalDateTime to;
+    private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
+    private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMM d yyyy, hh:mma");
+    private static final DateTimeFormatter STORAGE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
     public Event(String description, String from, String to) {
         super(description, TaskType.EVENT);
         if (from.isBlank() || to.isBlank()) {
             throw new IllegalArgumentException("Event time cannot be empty.");
         }
+        try {
+            this.from = LocalDateTime.parse(from, INPUT_FORMATTER);
+            this.to = LocalDateTime.parse(to, INPUT_FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Dates must be in format: d/M/yyyy HHmm (e.g., 2/12/2023 1800)");
+        }
+    }
+
+    public Event(String description, LocalDateTime from, LocalDateTime to) {
+        super(description, TaskType.EVENT);
         this.from = from;
         this.to = to;
     }
 
+    public LocalDateTime getStartDateTime() {
+        return from;
+    }
+
+    public LocalDateTime getEndDateTime() {
+        return to;
+    }
+
     @Override
     public String toString() {
-        return super.toString() + " (from: " + from + " to: " + to + ")";
+        return super.toString() + " (from: " + from.format(OUTPUT_FORMATTER) + " to: " + to.format(OUTPUT_FORMATTER) + ")";
+    }
+
+    public String toStorageString() {
+        return from.format(STORAGE_FORMATTER) + "|" + to.format(STORAGE_FORMATTER);
     }
 }
 
@@ -135,11 +183,17 @@ public class Oracle {
                             break;
                         case "D":
                             if (parts.length < 4) continue;
-                            task = new Deadline(description, parts[3].trim());
+                            LocalDateTime deadline = LocalDateTime.parse(parts[3].trim(),
+                                    DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
+                            task = new Deadline(description, deadline);
                             break;
                         case "E":
                             if (parts.length < 5) continue;
-                            task = new Event(description, parts[3].trim(), parts[4].trim());
+                            LocalDateTime eventStart = LocalDateTime.parse(parts[3].trim(),
+                                    DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
+                            LocalDateTime eventEnd = LocalDateTime.parse(parts[4].trim(),
+                                    DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
+                            task = new Event(description, eventStart, eventEnd);
                             break;
                         default:
                             continue;
@@ -168,23 +222,20 @@ public class Oracle {
             for (Task task : tasks) {
                 String isDone = task.getStatusIcon().equals("X") ? "1" : "0";
 
-                String taskStr = task.toString();
-                String description = taskStr.substring(taskStr.indexOf("] ") + 2);
-
                 String line = switch (task.getType()) {
-                    case TODO ->
-                            String.format("T | %s | %s", isDone, description);
+                    case TODO -> String.format("T | %s | %s", isDone,
+                            task.toString().substring(task.toString().indexOf("] ") + 2));
                     case DEADLINE -> {
-                        String desc = description.substring(0, description.indexOf(" (by:"));
-                        String by = description.substring(description.indexOf("by: ") + 4, description.length() - 1);
-                        yield String.format("D | %s | %s | %s", isDone, desc, by);
+                        Deadline d = (Deadline) task;
+                        String desc = task.toString().substring(task.toString().indexOf("] ") + 2,
+                                task.toString().indexOf(" (by:"));
+                        yield String.format("D | %s | %s | %s", isDone, desc, d.toStorageString());
                     }
                     case EVENT -> {
-                        String desc = description.substring(0, description.indexOf(" (from:"));
-                        String timeStr = description.substring(description.indexOf("from: "));
-                        String from = timeStr.substring(6, timeStr.indexOf(" to:"));
-                        String to = timeStr.substring(timeStr.indexOf("to: ") + 4, timeStr.length() - 1);
-                        yield String.format("E | %s | %s | %s | %s", isDone, desc, from, to);
+                        Event e = (Event) task;
+                        String desc = task.toString().substring(task.toString().indexOf("] ") + 2,
+                                task.toString().indexOf(" (from:"));
+                        yield String.format("E | %s | %s | %s", isDone, desc, e.toStorageString());
                     }
                 };
                 lines.add(line);
@@ -236,7 +287,7 @@ public class Oracle {
                 } else if (input.startsWith("deadline")) {
                     String[] parts = input.substring(8).split("/by", 2);
                     if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
-                        throw new OracleException("OOPS!!! The correct format for deadline is: deadline [task] /by [date]");
+                        throw new OracleException("OOPS!!! The correct format for deadline is: deadline [task] /by [date/time]");
                     }
                     String description = parts[0].trim();
                     String by = parts[1].trim();
@@ -320,7 +371,7 @@ public class Oracle {
                 System.out.println("    ____________________________________________________________");
             } catch (Exception e) {
                 System.out.println("    ____________________________________________________________");
-                System.out.println("    OOPS!!! Something went wrong: " + e.getMessage());
+                System.out.println("    OOPS!!! " + e.getMessage());
                 System.out.println("    ____________________________________________________________");
             }
 
