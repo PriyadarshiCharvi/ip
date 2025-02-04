@@ -1,3 +1,7 @@
+package oracle.task;
+
+import oracle.common.OracleException;
+
 import java.util.ArrayList;
 
 public class TaskList {

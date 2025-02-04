@@ -1,11 +1,13 @@
-class Task {
+package oracle.task;
+
+public class Task {
     private final String description;
     private final TaskType type;
     private boolean isDone;
 
     public Task(String description, TaskType type) {
         if (description.isBlank()) {
-            throw new IllegalArgumentException("Task description cannot be empty.");
+            throw new IllegalArgumentException("oracle.task.Task description cannot be empty.");
         }
         this.description = description;
         this.type = type;
