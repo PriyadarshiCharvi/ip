@@ -1,3 +1,17 @@
+package oracle.common;
+
+import oracle.command.Command;
+import oracle.command.AddCommand;
+import oracle.command.ExitCommand;
+import oracle.command.ListCommand;
+import oracle.command.DeleteCommand;
+import oracle.command.MarkCommand;
+import oracle.command.UnmarkCommand;
+
+import oracle.task.Todo;
+import oracle.task.Event;
+import oracle.task.Deadline;
+
 public class Parser {
     public static Command parse(String input) throws OracleException {
         String trimmedInput = input.trim();

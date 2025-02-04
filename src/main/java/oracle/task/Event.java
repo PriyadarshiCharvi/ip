@@ -1,8 +1,12 @@
+package oracle.task;
+
+import oracle.common.OracleException;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-class Event extends Task {
+public class Event extends Task {
     private final LocalDateTime from;
     private final LocalDateTime to;
     private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
@@ -12,13 +16,13 @@ class Event extends Task {
     public Event(String description, String from, String to) throws OracleException {
         super(description, TaskType.EVENT);
         if (from.isBlank() || to.isBlank()) {
-            throw new IllegalArgumentException("Event time cannot be empty.");
+            throw new IllegalArgumentException("oracle.task.Event time cannot be empty.");
         }
         try {
             this.from = LocalDateTime.parse(from, INPUT_FORMATTER);
             this.to = LocalDateTime.parse(to, INPUT_FORMATTER);
             if (this.to.isBefore(this.from)) {
-                throw new OracleException("Event end time cannot be before start time.");
+                throw new OracleException("oracle.task.Event end time cannot be before start time.");
             }
         } catch (DateTimeParseException e) {
             throw new OracleException(

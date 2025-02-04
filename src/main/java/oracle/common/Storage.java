@@ -1,3 +1,7 @@
+package oracle.common;
+
+import oracle.task.*;
+
 import java.io.IOException;
 
 import java.nio.file.Files;
@@ -8,7 +12,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Storage {
     private final Path filePath;
@@ -74,7 +77,7 @@ public class Storage {
         }
     }
 
-    public void save(List<Task> tasks) throws OracleException {
+    public void save(ArrayList<Task> tasks) throws OracleException {
         try {
             Path parentDir = filePath.getParent();
             if (!Files.exists(parentDir)) {

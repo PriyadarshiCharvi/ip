@@ -1,17 +1,21 @@
+package oracle.task;
+
+import oracle.common.OracleException;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-class Deadline extends Task {
+public class Deadline extends Task {
     private final LocalDateTime by;
     private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
     private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMM d yyyy, hh:mma");
     private static final DateTimeFormatter STORAGE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
-    public Deadline(String description, String by) throws OracleException{
+    public Deadline(String description, String by) throws OracleException {
         super(description, TaskType.DEADLINE);
         if (by.isBlank()) {
-            throw new IllegalArgumentException("Deadline date cannot be empty.");
+            throw new IllegalArgumentException("oracle.task.Deadline date cannot be empty.");
         }
         try {
             this.by = LocalDateTime.parse(by, INPUT_FORMATTER);
