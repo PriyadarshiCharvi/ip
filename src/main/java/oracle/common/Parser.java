@@ -1,9 +1,10 @@
 package oracle.common;
 
-import oracle.command.Command;
 import oracle.command.AddCommand;
-import oracle.command.ExitCommand;
 import oracle.command.ListCommand;
+import oracle.command.ExitCommand;
+import oracle.command.Command;
+import oracle.command.FindCommand;
 import oracle.command.DeleteCommand;
 import oracle.command.MarkCommand;
 import oracle.command.UnmarkCommand;
@@ -12,7 +13,17 @@ import oracle.task.Todo;
 import oracle.task.Event;
 import oracle.task.Deadline;
 
+/**
+ * Parses user input and converts it into executable commands.
+ */
 public class Parser {
+    /**
+     * Parses the user input string and returns the corresponding command.
+     *
+     * @param input The raw user input string.
+     * @return The appropriate {@code Command} based on the input.
+     * @throws OracleException If the input is invalid or unrecognized.
+     */
     public static Command parse(String input) throws OracleException {
         String trimmedInput = input.trim();
         if (trimmedInput.equals("list")) {
@@ -31,11 +42,21 @@ public class Parser {
             return parseMarkCommand(trimmedInput);
         } else if (trimmedInput.startsWith("unmark")) {
             return parseUnmarkCommand(trimmedInput);
+        } else if (trimmedInput.startsWith("find")){
+            String keyword = trimmedInput.substring(5).trim();
+            return new FindCommand(keyword);
         } else {
             throw new OracleException("OOPS!!! I'm sorry, but I don't know what that means :-(. Try something like 'todo assignment'.");
         }
     }
 
+    /**
+     * Parses a todo command and returns an {@code AddCommand}.
+     *
+     * @param input The user input string.
+     * @return An {@code AddCommand} that adds a todo task.
+     * @throws OracleException If the description is missing.
+     */
     private static Command parseTodoCommand(String input) throws OracleException {
         if (input.length() <= 5) {
             throw new OracleException("OOPS!!! The description of a todo cannot be empty.");
@@ -44,6 +65,13 @@ public class Parser {
         return new AddCommand(new Todo(description));
     }
 
+    /**
+     * Parses a deadline command and returns an {@code AddCommand}.
+     *
+     * @param input The user input string.
+     * @return An {@code AddCommand} that adds a deadline task.
+     * @throws OracleException If the format is incorrect or the description is missing.
+     */
     private static Command parseDeadlineCommand(String input) throws OracleException {
         String[] parts = input.substring(8).split("/by", 2);
         if (parts.length < 2) {
@@ -69,6 +97,13 @@ public class Parser {
         return new AddCommand(new Deadline(description, by));
     }
 
+    /**
+     * Parses an event command and returns an {@code AddCommand}.
+     *
+     * @param input The user input string.
+     * @return An {@code AddCommand} that adds an event task.
+     * @throws OracleException If the format is incorrect or required fields are missing.
+     */
     private static Command parseEventCommand(String input) throws OracleException {
         String[] parts = input.substring(5).split("/from|/to", 3);
         if (parts.length < 3) {
@@ -95,6 +130,13 @@ public class Parser {
         return new AddCommand(new Event(description, from, to));
     }
 
+    /**
+     * Parses a delete command and returns a {@code DeleteCommand}.
+     *
+     * @param input The user input string.
+     * @return A {@code DeleteCommand} that removes a task.
+     * @throws OracleException If the task index is invalid.
+     */
     private static Command parseDeleteCommand(String input) throws OracleException {
         try {
             int index = Integer.parseInt(input.substring(7).trim()) - 1;
@@ -104,6 +146,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses a mark command and returns a {@code MarkCommand}.
+     *
+     * @param input The user input string.
+     * @return A {@code MarkCommand} that marks a task as done.
+     * @throws OracleException If the task index is invalid.
+     */
     private static Command parseMarkCommand(String input) throws OracleException {
         try {
             int index = Integer.parseInt(input.substring(5).trim()) - 1;
@@ -113,6 +162,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses an unmark command and returns an {@code UnmarkCommand}.
+     *
+     * @param input The user input string.
+     * @return An {@code UnmarkCommand} that marks a task as not done.
+     * @throws OracleException If the task index is invalid.
+     */
     private static Command parseUnmarkCommand(String input) throws OracleException {
         try {
             int index = Integer.parseInt(input.substring(7).trim()) - 1;

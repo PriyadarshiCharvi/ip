@@ -9,12 +9,20 @@ import oracle.common.Ui;
 
 import oracle.task.TaskList;
 
-
+/**
+ * The main class for the Oracle application.
+ * Handles initialization, user interactions, and execution of commands.
+ */
 public class Oracle {
     private final Storage storage;
     private final TaskList tasks;
     private final Ui ui;
 
+    /**
+     * Constructs an Oracle chatbot instance with a specified storage file.
+     *
+     * @param filePath The file path where task data is stored.
+     */
     public Oracle(String filePath) {
         TaskList tasks1;
         ui = new Ui();
@@ -28,6 +36,9 @@ public class Oracle {
         tasks = tasks1;
     }
 
+    /**
+     * Runs the chatbot, handling user commands in a loop until an exit command is issued.
+     */
     public void run() {
         ui.showWelcome();
         boolean isExit = false;
@@ -44,6 +55,12 @@ public class Oracle {
         ui.close();
     }
 
+    /**
+     * The entry point of the Oracle chatbot application.
+     * Initializes and starts the chatbot with a predefined storage location.
+     *
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
         new Oracle("data/oracle.txt").run();
     }
