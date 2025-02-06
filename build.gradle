@@ -28,17 +28,11 @@ test {
 }
 
 application {
-    mainClass = 'oracle.Oracle'
-}
-
-jar {
-    manifest {
-        attributes 'Main-Class': 'oracle.Oracle'
-    }
+    mainClass.set("seedu.duke.Duke")
 }
 
 shadowJar {
-    archiveBaseName = "Oracle"
+    archiveBaseName = "duke"
     archiveClassifier = null
 }
 
