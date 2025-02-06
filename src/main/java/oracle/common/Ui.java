@@ -82,7 +82,7 @@ public class Ui {
 
     public void showGoodbye() {
         showLine();
-        System.out.println("    Bye. Hope to see you again soon!");
+        System.out.println("    Goodbye. Hope to see you again soon!");
         showLine();
     }
 
