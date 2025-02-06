@@ -14,7 +14,7 @@ public class Ui {
 
     public void showWelcome() {
         showLine();
-        System.out.println("    Hello! I'm oracle.Oracle");
+        System.out.println("    Hello! I'm Oracle");
         System.out.println("    What can I do for you?");
         showLine();
     }

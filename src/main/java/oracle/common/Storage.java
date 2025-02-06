@@ -45,22 +45,22 @@ public class Storage {
                     Task task;
 
                     switch (type) {
-                        case "T":
-                            task = new Todo(description);
-                            break;
-                        case "D":
-                            if (parts.length < 4) continue;
-                            LocalDateTime deadline = LocalDateTime.parse(parts[3].trim(), STORAGE_FORMATTER);
-                            task = new Deadline(description, deadline);
-                            break;
-                        case "E":
-                            if (parts.length < 5) continue;
-                            LocalDateTime eventStart = LocalDateTime.parse(parts[3].trim(), STORAGE_FORMATTER);
-                            LocalDateTime eventEnd = LocalDateTime.parse(parts[4].trim(), STORAGE_FORMATTER);
-                            task = new Event(description, eventStart, eventEnd);
-                            break;
-                        default:
-                            continue;
+                    case "T":
+                        task = new Todo(description);
+                        break;
+                    case "D":
+                        if (parts.length < 4) continue;
+                        LocalDateTime deadline = LocalDateTime.parse(parts[3].trim(), STORAGE_FORMATTER);
+                        task = new Deadline(description, deadline);
+                        break;
+                    case "E":
+                        if (parts.length < 5) continue;
+                        LocalDateTime eventStart = LocalDateTime.parse(parts[3].trim(), STORAGE_FORMATTER);
+                        LocalDateTime eventEnd = LocalDateTime.parse(parts[4].trim(), STORAGE_FORMATTER);
+                        task = new Event(description, eventStart, eventEnd);
+                        break;
+                    default:
+                        continue;
                     }
 
                     if (isDone) {
