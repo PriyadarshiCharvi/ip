@@ -2,10 +2,17 @@ plugins {
     id 'java'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'checkstyle'
 }
 
 repositories {
     mavenCentral()
+}
+
+checkstyle {
+    toolVersion = '10.2'
+    configFile = file("$rootProject.projectDir/config/checkstyle/checkstyle.xml")
+    configProperties = ["suppressionFile": "$rootProject.projectDir/config/checkstyle/suppressions.xml"]
 }
 
 dependencies {
