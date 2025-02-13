@@ -20,8 +20,8 @@ import java.util.ArrayList;
  * Handles loading and saving of tasks to a file for persistent storage.
  */
 public class Storage {
-    private final Path filePath;
     private static final DateTimeFormatter STORAGE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+    private final Path filePath;
 
     /**
      * Constructs a Storage object to manage file operations.
@@ -67,12 +67,16 @@ public class Storage {
                         task = new Todo(description);
                         break;
                     case "D":
-                        if (parts.length < 4) continue;
+                        if (parts.length < 4) {
+                            continue;
+                        }
                         LocalDateTime deadline = LocalDateTime.parse(parts[3].trim(), STORAGE_FORMATTER);
                         task = new Deadline(description, deadline);
                         break;
                     case "E":
-                        if (parts.length < 5) continue;
+                        if (parts.length < 5) {
+                            continue;
+                        }
                         LocalDateTime eventStart = LocalDateTime.parse(parts[3].trim(), STORAGE_FORMATTER);
                         LocalDateTime eventEnd = LocalDateTime.parse(parts[4].trim(), STORAGE_FORMATTER);
                         task = new Event(description, eventStart, eventEnd);
@@ -101,6 +105,7 @@ public class Storage {
      * @param tasks The list of tasks to be saved.
      * @throws OracleException If an error occurs while writing to the file.
      */
+    @SuppressWarnings("checkstyle:Indentation")
     public void save(ArrayList<Task> tasks) throws OracleException {
         try {
             Path parentDir = filePath.getParent();
