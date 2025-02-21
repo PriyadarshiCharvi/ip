@@ -1,12 +1,10 @@
 package oracle;
 
 import oracle.command.Command;
-
 import oracle.common.OracleException;
 import oracle.common.Parser;
 import oracle.common.Storage;
 import oracle.common.Ui;
-
 import oracle.task.TaskList;
 
 /**

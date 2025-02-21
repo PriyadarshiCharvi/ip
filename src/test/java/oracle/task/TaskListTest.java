@@ -1,10 +1,11 @@
 package oracle.task;
 
-import oracle.common.OracleException;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Test;
+
+import oracle.common.OracleException;
 
 public class TaskListTest {
     @Test

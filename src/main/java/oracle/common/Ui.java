@@ -1,9 +1,9 @@
 package oracle.common;
 
-import oracle.task.Task;
-
 import java.util.List;
 import java.util.Scanner;
+
+import oracle.task.Task;
 
 /**
  * Handles user interactions by displaying messages and reading user input.

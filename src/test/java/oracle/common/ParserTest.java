@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.Test;
+
 import oracle.command.AddCommand;
 import oracle.command.Command;
-
-import org.junit.jupiter.api.Test;
 
 public class ParserTest {
 
@@ -34,6 +34,7 @@ public class ParserTest {
         OracleException exception = assertThrows(OracleException.class, () -> {
             Parser.parse("unknown command");
         });
-        assertEquals("OOPS!!! I'm sorry, but I don't know what that means :-(. Try something like 'todo assignment'.", exception.getMessage());
+        assertEquals("OOPS!!! I'm sorry, but I don't know what that means :-(. Try something like 'todo assignment'.",
+                exception.getMessage());
     }
 }

@@ -1,17 +1,16 @@
 package oracle.common;
 
 import oracle.command.AddCommand;
-import oracle.command.ListCommand;
-import oracle.command.ExitCommand;
 import oracle.command.Command;
-import oracle.command.FindCommand;
 import oracle.command.DeleteCommand;
+import oracle.command.ExitCommand;
+import oracle.command.FindCommand;
+import oracle.command.ListCommand;
 import oracle.command.MarkCommand;
 import oracle.command.UnmarkCommand;
-
-import oracle.task.Todo;
-import oracle.task.Event;
 import oracle.task.Deadline;
+import oracle.task.Event;
+import oracle.task.Todo;
 
 /**
  * Parses user input and converts it into executable commands.
@@ -42,11 +41,12 @@ public class Parser {
             return parseMarkCommand(trimmedInput);
         } else if (trimmedInput.startsWith("unmark")) {
             return parseUnmarkCommand(trimmedInput);
-        } else if (trimmedInput.startsWith("find")){
+        } else if (trimmedInput.startsWith("find")) {
             String keyword = trimmedInput.substring(5).trim();
             return new FindCommand(keyword);
         } else {
-            throw new OracleException("OOPS!!! I'm sorry, but I don't know what that means :-(. Try something like 'todo assignment'.");
+            throw new OracleException(
+                    "OOPS!!! I'm sorry, but I don't know what that means :-(. Try something like 'todo assignment'.");
         }
     }
 
@@ -76,8 +76,8 @@ public class Parser {
         String[] parts = input.substring(8).split("/by", 2);
         if (parts.length < 2) {
             throw new OracleException(
-                    "The correct format for deadline is: deadline [description] /by [date time]\n" +
-                            "    For example: deadline assignment /by 2/12/2023 2359"
+                    "The correct format for deadline is: deadline [description] /by [date time]\n"
+                            + "    For example: deadline assignment /by 2/12/2023 2359"
             );
         }
         String description = parts[0].trim();
@@ -88,9 +88,9 @@ public class Parser {
         }
         if (by.isEmpty()) {
             throw new OracleException(
-                    "The deadline time must be provided.\n" +
-                            "    Format: deadline [description] /by [date time]\n" +
-                            "    For example: deadline assignment /by 2/12/2023 2359"
+                    "The deadline time must be provided.\n"
+                            + "    Format: deadline [description] /by [date time]\n"
+                            + "    For example: deadline assignment /by 2/12/2023 2359"
             );
         }
 
@@ -108,8 +108,8 @@ public class Parser {
         String[] parts = input.substring(5).split("/from|/to", 3);
         if (parts.length < 3) {
             throw new OracleException(
-                    "The correct format for event is: event [description] /from [date time] /to [date time]\n" +
-                            "    For example: event meeting /from 2/12/2023 1400 /to 2/12/2023 1500"
+                    "The correct format for event is: event [description] /from [date time] /to [date time]\n"
+                            + "    For example: event meeting /from 2/12/2023 1400 /to 2/12/2023 1500"
             );
         }
         String description = parts[0].trim();
@@ -121,9 +121,9 @@ public class Parser {
         }
         if (from.isEmpty() || to.isEmpty()) {
             throw new OracleException(
-                    "Both start and end times must be provided.\n" +
-                            "    Format: event [description] /from [date time] /to [date time]\n" +
-                            "    For example: event meeting /from 2/12/2023 1400 /to 2/12/2023 1500"
+                    "Both start and end times must be provided.\n"
+                            + "    Format: event [description] /from [date time] /to [date time]\n"
+                            + "    For example: event meeting /from 2/12/2023 1400 /to 2/12/2023 1500"
             );
         }
 

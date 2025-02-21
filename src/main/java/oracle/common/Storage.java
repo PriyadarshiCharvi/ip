@@ -1,20 +1,17 @@
 package oracle.common;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
 import oracle.task.Deadline;
 import oracle.task.Event;
 import oracle.task.Task;
 import oracle.task.Todo;
-
-import java.io.IOException;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
-import java.util.ArrayList;
 
 /**
  * Handles loading and saving of tasks to a file for persistent storage.
@@ -55,7 +52,9 @@ public class Storage {
             for (String line : Files.readAllLines(filePath)) {
                 try {
                     String[] parts = line.split("\\|");
-                    if (parts.length < 3) continue;
+                    if (parts.length < 3) {
+                        continue;
+                    }
 
                     String type = parts[0].trim();
                     boolean isDone = parts[1].trim().equals("1");
@@ -117,22 +116,25 @@ public class Storage {
             for (Task task : tasks) {
                 String isDone = task.getStatusIcon().equals("X") ? "1" : "0";
 
-                String line = switch (task.getType()) {
-                    case TODO -> String.format("T | %s | %s", isDone,
-                            task.toString().substring(task.toString().indexOf("] ") + 2));
-                    case DEADLINE -> {
-                        Deadline d = (Deadline) task;
-                        String desc = task.toString().substring(task.toString().indexOf("] ") + 2,
-                                task.toString().indexOf(" (by:"));
-                        yield String.format("D | %s | %s | %s", isDone, desc, d.toStorageString());
-                    }
-                    case EVENT -> {
-                        Event e = (Event) task;
-                        String desc = task.toString().substring(task.toString().indexOf("] ") + 2,
-                                task.toString().indexOf(" (from:"));
-                        yield String.format("E | %s | %s | %s", isDone, desc, e.toStorageString());
-                    }
-                };
+                String line;
+                switch (task.getType()) {
+                case TODO -> line = String.format("T | %s | %s", isDone,
+                        task.toString().substring(task.toString().indexOf("] ") + 2));
+                case DEADLINE -> {
+                    Deadline d = (Deadline) task;
+                    String desc = task.toString().substring(task.toString().indexOf("] ") + 2,
+                            task.toString().indexOf(" (by:"));
+                    line = String.format("D | %s | %s | %s", isDone, desc, d.toStorageString());
+                }
+                case EVENT -> {
+                    Event e = (Event) task;
+                    String desc = task.toString().substring(task.toString().indexOf("] ") + 2,
+                            task.toString().indexOf(" (from:"));
+                    line = String.format("E | %s | %s | %s", isDone, desc, e.toStorageString());
+                }
+                default -> line = " ";
+                }
+                ;
                 lines.add(line);
             }
             Files.write(filePath, lines);

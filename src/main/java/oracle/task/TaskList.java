@@ -1,8 +1,8 @@
 package oracle.task;
 
-import oracle.common.OracleException;
-
 import java.util.ArrayList;
+
+import oracle.common.OracleException;
 
 /**
  * Represents a list of tasks. Provides methods to add, remove, retrieve, and check tasks.

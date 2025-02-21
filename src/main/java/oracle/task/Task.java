@@ -14,7 +14,7 @@ public class Task {
      * The task is initially marked as not done.
      *
      * @param description The description of the task.
-     * @param type The type of the task (TODO, DEADLINE, or EVENT).
+     * @param type        The type of the task (TODO, DEADLINE, or EVENT).
      * @throws IllegalArgumentException If the description is empty or blank.
      */
     public Task(String description, TaskType type) {
@@ -66,11 +66,14 @@ public class Task {
      */
     @Override
     public String toString() {
-        String typeIcon = switch (type) {
-            case TODO -> "[T]";
-            case DEADLINE -> "[D]";
-            case EVENT -> "[E]";
-        };
+        String typeIcon;
+        switch (type) {
+        case TODO -> typeIcon = "[T]";
+        case DEADLINE -> typeIcon = "[D]";
+        case EVENT -> typeIcon = "[E]";
+        default -> typeIcon = " ";
+        }
+        ;
         return typeIcon + "[" + getStatusIcon() + "] " + description;
     }
 }

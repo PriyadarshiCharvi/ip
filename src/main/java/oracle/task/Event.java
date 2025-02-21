@@ -1,20 +1,23 @@
 package oracle.task;
 
-import oracle.common.OracleException;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+import oracle.common.OracleException;
+
+
 
 /**
  * Represents an event task with a start and end date/time.
  */
 public class Event extends Task {
-    private final LocalDateTime from;
-    private final LocalDateTime to;
     private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
     private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMM d yyyy, hh:mma");
     private static final DateTimeFormatter STORAGE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+
+    private final LocalDateTime from;
+    private final LocalDateTime to;
 
     /**
      * Constructs an Event task with a description, start time, and end time as strings.
@@ -37,9 +40,9 @@ public class Event extends Task {
             }
         } catch (DateTimeParseException e) {
             throw new OracleException(
-                    "Please enter dates in the format: d/M/yyyy HHmm\n" +
-                            "    For example: event meeting /from 2/12/2023 1400 /to 2/12/2023 1500\n" +
-                            "    Note: Time should be in 24-hour format."
+                    "Please enter dates in the format: d/M/yyyy HHmm\n"
+                            + "    For example: event meeting /from 2/12/2023 1400 /to 2/12/2023 1500\n"
+                            + "    Note: Time should be in 24-hour format."
             );
         }
     }
@@ -82,7 +85,8 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
-        return super.toString() + " (from: " + from.format(OUTPUT_FORMATTER) + " to: " + to.format(OUTPUT_FORMATTER) + ")";
+        return super.toString() + " (from: " + from.format(OUTPUT_FORMATTER)
+                + " to: " + to.format(OUTPUT_FORMATTER) + ")";
     }
 
     /**
