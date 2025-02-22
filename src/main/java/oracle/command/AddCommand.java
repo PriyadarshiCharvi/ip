@@ -36,4 +36,22 @@ public class AddCommand extends Command {
         storage.save(tasks.getTasks());
         ui.showAddedTask(task, tasks.size());
     }
+
+    /**
+     * Executes the add task operation for the GUI interface.
+     * This method adds a new task to the task list and persists the updated list to storage.
+     *
+     * @param tasks   The task list to add the new task to
+     * @param ui      The UI component (not used in this implementation)
+     * @param storage The storage component to save the updated task list
+     * @return A formatted string confirming the task addition, showing the added task and updated task count
+     * @throws OracleException If there is an error during task addition or storage operations
+     */
+    @Override
+    public String executeForGui(TaskList tasks, Ui ui, Storage storage) throws OracleException {
+        tasks.addTask(task);
+        storage.save(tasks.getTasks());
+        return "Added task:\n" + task + "\nNow you have " + tasks.size() + " tasks in the list.";
+    }
+
 }

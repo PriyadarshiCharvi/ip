@@ -53,6 +53,14 @@ public class Oracle {
         ui.close();
     }
 
+    public String getResponse(String input) {
+        try {
+            return Parser.parse(input).executeForGui(tasks, ui, storage);
+        } catch (OracleException e) {
+            return "Error: " + e.getMessage();
+        }
+    }
+
     /**
      * The entry point of the Oracle chatbot application.
      * Initializes and starts the chatbot with a predefined storage location.

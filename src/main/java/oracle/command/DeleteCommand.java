@@ -36,4 +36,21 @@ public class DeleteCommand extends Command {
         storage.save(tasks.getTasks());
         ui.showDeletedTask(removedTask, tasks.size());
     }
+    /**
+     * Executes the remove task operation for the GUI interface.
+     * This method removes a task at the specified index from the task list and persists the updated list to storage.
+     *
+     * @param tasks   The task list to remove the task from
+     * @param ui      The UI component (not used in this implementation)
+     * @param storage The storage component to save the updated task list
+     * @return A formatted string confirming the task removal, showing the removed task and updated task count
+     * @throws OracleException If there is an error during task removal or storage operations
+     */
+    @Override
+    public String executeForGui(TaskList tasks, Ui ui, Storage storage) throws OracleException {
+        Task removedTask = tasks.deleteTask(index);
+        storage.save(tasks.getTasks());
+        return "Removed task:\n" + removedTask + "\nNow you have " + tasks.size() + " tasks in the list.";
+    }
+
 }

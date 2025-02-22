@@ -21,6 +21,21 @@ public class ExitCommand extends Command {
     }
 
     /**
+     * Executes the exit operation for the GUI interface.
+     * This method returns a farewell message to be displayed before the application closes.
+     *
+     * @param tasks   The task list (not used in this implementation)
+     * @param ui      The UI component (not used in this implementation)
+     * @param storage The storage component (not used in this implementation)
+     * @return A goodbye message to the user
+     */
+    @Override
+    public String executeForGui(TaskList tasks, Ui ui, Storage storage) {
+        return "Goodbye! Hope to see you again soon!";
+    }
+
+
+    /**
      * Indicates that this command signals the program to exit.
      *
      * @return {@code true}, indicating that the program should terminate.

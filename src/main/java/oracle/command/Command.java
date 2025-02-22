@@ -20,7 +20,16 @@ public abstract class Command {
      * @throws OracleException If an error occurs during execution.
      */
     public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws OracleException;
-
+    /**
+     * Executes the command and returns the response for the GUI.
+     *
+     * @param tasks   The task list to be modified.
+     * @param ui      The UI component (not used for GUI responses).
+     * @param storage The storage component for saving task data.
+     * @return The response message as a string.
+     * @throws OracleException If an error occurs during execution.
+     */
+    public abstract String executeForGui(TaskList tasks, Ui ui, Storage storage) throws OracleException;
     /**
      * Determines if this command signals the program to exit.
      * By default, returns {@code false}. Commands like {@code ExitCommand} will override this.

@@ -50,12 +50,12 @@ test {
 }
 
 application {
-    mainClass = 'oracle.Oracle'
+    mainClass = 'oracle.Launcher'
 }
 
 jar {
     manifest {
-        attributes 'Main-Class': 'oracle.Oracle'
+        attributes 'Main-Class': 'oracle.Launcher'
     }
 }
 

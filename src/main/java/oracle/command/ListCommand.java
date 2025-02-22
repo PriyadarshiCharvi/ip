@@ -19,4 +19,26 @@ public class ListCommand extends Command {
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         ui.showTasks(tasks.getTasks());
     }
+    /**
+     * Executes the list operation for the GUI interface.
+     * This method displays all tasks currently in the task list in a numbered format.
+     * If the task list is empty, it returns an appropriate message.
+     *
+     * @param tasks   The task list to display
+     * @param ui      The UI component (not used in this implementation)
+     * @param storage The storage component (not used in this implementation)
+     * @return A formatted string containing numbered list of all tasks, or a message if list is empty
+     */
+    @Override
+    public String executeForGui(TaskList tasks, Ui ui, Storage storage) {
+        if (tasks.isEmpty()) {
+            return "There are no tasks in your list yet.";
+        }
+        StringBuilder response = new StringBuilder("Here are the tasks in your list:\n");
+        for (int i = 0; i < tasks.size(); i++) {
+            response.append((i + 1)).append(". ").append(tasks.getTasks().get(i)).append("\n");
+        }
+        return response.toString();
+    }
+
 }

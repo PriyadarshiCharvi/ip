@@ -35,4 +35,27 @@ public class FindCommand extends Command {
         ArrayList<Task> matchingTasks = tasks.findTasks(keyword);
         ui.showMatchingTasks(matchingTasks);
     }
+    /**
+     * Executes the find operation for the GUI interface.
+     * This method searches through the task list for tasks containing the specified keyword
+     * and returns a formatted list of all matching tasks.
+     *
+     * @param tasks   The task list to search through
+     * @param ui      The UI component (not used in this implementation)
+     * @param storage The storage component (not used in this implementation)
+     * @return A formatted string containing numbered list of all matching tasks, or a message if no matches found
+     */
+    @Override
+    public String executeForGui(TaskList tasks, Ui ui, Storage storage) {
+        ArrayList<Task> matchingTasks = tasks.findTasks(keyword);
+        if (matchingTasks.isEmpty()) {
+            return "No matching tasks found.";
+        }
+        StringBuilder response = new StringBuilder("Here are the matching tasks in your list:\n");
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            response.append((i + 1)).append(". ").append(matchingTasks.get(i)).append("\n");
+        }
+        return response.toString();
+    }
+
 }
