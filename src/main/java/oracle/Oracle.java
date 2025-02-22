@@ -35,7 +35,7 @@ public class Oracle {
     }
 
     /**
-     * Runs the chatbot, handling user commands in a loop until an exit command is issued.
+     * Runs the chatbot, handles user commands in a loop until an exit command is issued.
      */
     public void run() {
         ui.showWelcome();
