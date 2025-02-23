@@ -1,6 +1,6 @@
 T | 0 | assignment
 E | 1 | meeting | 2025-02-20 1200|2025-02-20 1400
 D | 1 | homework | 2025-02-21 2359
-T | 0 | study for exam
 T | 0 | complete project
-E | 0 | project meeting | 2025-02-22 1800|2025-02-22 2000
+E | 0 | project meeting | 2025-02-24 1600|2025-02-24 1800
+T | 0 | homework
