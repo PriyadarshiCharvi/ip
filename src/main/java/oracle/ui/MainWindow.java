@@ -100,8 +100,8 @@ public class MainWindow {
         messageLabel.setMaxWidth(250);
         messageLabel.setMinHeight(Region.USE_PREF_SIZE);
         messageLabel.setStyle(sender.equals("user")
-                ? "-fx-background-color: #007AFF; -fx-text-fill: white; -fx-padding: 10; -fx-background-radius: 15;"
-                : "-fx-background-color: #34C759; -fx-text-fill: white; -fx-padding: 10; -fx-background-radius: 15;");
+                ? "-fx-background-color: #6A0DAD; -fx-text-fill: white; -fx-padding: 10; -fx-background-radius: 15;"
+                : "-fx-background-color: #0D47A1; -fx-text-fill: white; -fx-padding: 10; -fx-background-radius: 15;");
 
         ImageView profileView = new ImageView(profileImage);
         profileView.setFitHeight(40);
