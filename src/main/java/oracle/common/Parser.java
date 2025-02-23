@@ -24,6 +24,8 @@ public class Parser {
      * @throws OracleException If the input is invalid or unrecognized.
      */
     public static Command parse(String input) throws OracleException {
+        assert input != null : "Input command should not be null";
+        assert !input.trim().isEmpty() : "Input command should not be empty";
         String trimmedInput = input.trim();
         if (trimmedInput.equals("list")) {
             return new ListCommand();

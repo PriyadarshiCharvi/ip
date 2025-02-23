@@ -43,6 +43,7 @@ public class TaskList {
      * @throws OracleException If the task list is empty or the index is invalid.
      */
     public Task deleteTask(int index) throws OracleException {
+        assert tasks != null : "Task list should not be null";
         if (tasks.isEmpty()) {
             throw new OracleException("There are no tasks to delete.");
         }
@@ -60,6 +61,7 @@ public class TaskList {
      * @throws OracleException If the index is out of bounds.
      */
     public Task getTask(int index) throws OracleException {
+        assert tasks != null : "Task list should not be null";
         if (index < 0 || index >= tasks.size()) {
             throw new OracleException("Invalid task number. Please enter a number between 1 and " + tasks.size());
         }
