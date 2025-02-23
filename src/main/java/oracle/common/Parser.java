@@ -27,28 +27,29 @@ public class Parser {
         assert input != null : "Input command should not be null";
         assert !input.trim().isEmpty() : "Input command should not be empty";
         String trimmedInput = input.trim();
-        if (trimmedInput.equals("list")) {
+        switch (trimmedInput.split(" ")[0]) {
+        case "list":
             return new ListCommand();
-        } else if (trimmedInput.equals("bye")) {
+        case "bye":
             return new ExitCommand();
-        } else if (trimmedInput.startsWith("todo")) {
+        case "todo":
             return parseTodoCommand(trimmedInput);
-        } else if (trimmedInput.startsWith("deadline")) {
+        case "deadline":
             return parseDeadlineCommand(trimmedInput);
-        } else if (trimmedInput.startsWith("event")) {
+        case "event":
             return parseEventCommand(trimmedInput);
-        } else if (trimmedInput.startsWith("delete")) {
+        case "delete":
             return parseDeleteCommand(trimmedInput);
-        } else if (trimmedInput.startsWith("mark")) {
+        case "mark":
             return parseMarkCommand(trimmedInput);
-        } else if (trimmedInput.startsWith("unmark")) {
+        case "unmark":
             return parseUnmarkCommand(trimmedInput);
-        } else if (trimmedInput.startsWith("find")) {
-            String keyword = trimmedInput.substring(5).trim();
-            return new FindCommand(keyword);
-        } else {
+        case "find":
+            return new FindCommand(trimmedInput.substring(5).trim());
+        default:
             throw new OracleException(
-                    "OOPS!!! I'm sorry, but I don't know what that means :-(. Try something like 'todo assignment'.");
+                    "OOPS!!! I'm sorry, but I don't know what that means :-(. Try something like 'todo assignment'."
+            );
         }
     }
 
@@ -75,13 +76,17 @@ public class Parser {
      * @throws OracleException If the format is incorrect or the description is missing.
      */
     private static Command parseDeadlineCommand(String input) throws OracleException {
-        String[] parts = input.substring(8).split("/by", 2);
+        String trimmedInput = input.trim();
+        String commandWithoutPrefix = trimmedInput.substring("deadline".length()).trim();
+        String[] parts = commandWithoutPrefix.split("/by", 2);
+
         if (parts.length < 2) {
             throw new OracleException(
                     "The correct format for deadline is: deadline [description] /by [date time]\n"
-                            + "    For example: deadline assignment /by 2/12/2023 2359"
+                    + "    For example: deadline assignment /by 2/12/2023 2359"
             );
         }
+
         String description = parts[0].trim();
         String by = parts[1].trim();
 
@@ -91,8 +96,8 @@ public class Parser {
         if (by.isEmpty()) {
             throw new OracleException(
                     "The deadline time must be provided.\n"
-                            + "    Format: deadline [description] /by [date time]\n"
-                            + "    For example: deadline assignment /by 2/12/2023 2359"
+                    + "    Format: deadline [description] /by [date time]\n"
+                    + "    For example: deadline assignment /by 2/12/2023 2359"
             );
         }
 

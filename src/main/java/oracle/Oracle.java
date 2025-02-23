@@ -41,16 +41,21 @@ public class Oracle {
         ui.showWelcome();
         boolean isExit = false;
         while (!isExit) {
-            try {
-                String fullCommand = ui.readCommand();
-                Command c = Parser.parse(fullCommand);
-                c.execute(tasks, ui, storage);
-                isExit = c.isExit();
-            } catch (OracleException e) {
-                ui.showError(e.getMessage());
-            }
+            String input = ui.readCommand();
+            isExit = processCommand(input);
         }
         ui.close();
+    }
+
+    private boolean processCommand(String input) {
+        try {
+            Command command = Parser.parse(input);
+            command.execute(tasks, ui, storage);
+            return command.isExit();
+        } catch (OracleException e) {
+            ui.showError(e.getMessage());
+            return false;
+        }
     }
 
     public String getResponse(String input) {
