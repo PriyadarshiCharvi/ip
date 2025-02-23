@@ -37,6 +37,7 @@ public class Storage {
      * @throws OracleException If an error occurs while reading the file.
      */
     public ArrayList<Task> load() throws OracleException {
+        assert filePath != null : "File path should not be null";
         try {
             Path parentDir = filePath.getParent();
             if (!Files.exists(parentDir)) {
