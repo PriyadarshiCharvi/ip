@@ -5,6 +5,7 @@ import oracle.command.Command;
 import oracle.command.DeleteCommand;
 import oracle.command.ExitCommand;
 import oracle.command.FindCommand;
+import oracle.command.HelpCommand;
 import oracle.command.ListCommand;
 import oracle.command.MarkCommand;
 import oracle.command.SnoozeCommand;
@@ -49,9 +50,11 @@ public class Parser {
             return new FindCommand(trimmedInput.substring(5).trim());
         case "snooze":
             return parseSnoozeCommand(trimmedInput);
+        case "help":
+            return new HelpCommand();
         default:
             throw new OracleException(
-                    "OOPS!!! I'm sorry, but I don't know what that means :-(. Try something like 'todo assignment'."
+                    "OOPS!!! I'm sorry, but I don't know what that means :-(. Type 'help' to see the list of commands."
             );
         }
     }

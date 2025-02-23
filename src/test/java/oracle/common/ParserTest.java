@@ -34,7 +34,8 @@ public class ParserTest {
         OracleException exception = assertThrows(OracleException.class, () -> {
             Parser.parse("unknown command");
         });
-        assertEquals("OOPS!!! I'm sorry, but I don't know what that means :-(. Try something like 'todo assignment'.",
+        assertEquals(
+                "OOPS!!! I'm sorry, but I don't know what that means :-(. Type 'help' to see the list of commands.",
                 exception.getMessage());
     }
 }
