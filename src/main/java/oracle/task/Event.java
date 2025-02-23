@@ -16,8 +16,8 @@ public class Event extends Task {
     private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMM d yyyy, hh:mma");
     private static final DateTimeFormatter STORAGE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
-    private final LocalDateTime from;
-    private final LocalDateTime to;
+    private LocalDateTime from;
+    private LocalDateTime to;
 
     /**
      * Constructs an Event task with a description, start time, and end time as strings.
@@ -97,4 +97,21 @@ public class Event extends Task {
     public String toStorageString() {
         return from.format(STORAGE_FORMATTER) + "|" + to.format(STORAGE_FORMATTER);
     }
+
+    /**
+     * Reschedules the event to a new start time while preserving its duration.
+     *
+     * @param newFrom The new start date and time.
+     * @param newTo The new end date and time.
+     * @throws OracleException If the new end time is before the new start time.
+     */
+    public void reschedule(LocalDateTime newFrom, LocalDateTime newTo) throws OracleException {
+        if (newTo.isBefore(newFrom)) {
+            throw new OracleException("Event end time cannot be before start time.");
+        }
+        this.from = newFrom;
+        this.to = newTo;
+    }
+
+
 }

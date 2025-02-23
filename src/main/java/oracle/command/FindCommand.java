@@ -2,6 +2,7 @@ package oracle.command;
 
 import java.util.List;
 
+import oracle.common.OracleException;
 import oracle.common.Storage;
 import oracle.common.Ui;
 import oracle.task.Task;
@@ -31,7 +32,11 @@ public class FindCommand extends Command {
      * @param storage The storage component (not used in this command).
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public void execute(TaskList tasks, Ui ui, Storage storage) throws OracleException {
+        if (tasks.isEmpty()) {
+            throw new OracleException("OOPS! There are no tasks in the list yet. "
+                           + "Please add some tasks before trying to find them.");
+        }
         List<Task> matchingTasks = tasks.findTasks(keyword);
         ui.showMatchingTasks(matchingTasks);
     }
@@ -47,6 +52,10 @@ public class FindCommand extends Command {
      */
     @Override
     public String executeForGui(TaskList tasks, Ui ui, Storage storage) {
+        if (tasks.isEmpty()) {
+            return ("OOPS! There are no tasks in the list yet. "
+                                      + "Please add some tasks before trying to find them.");
+        }
         List<Task> matchingTasks = tasks.findTasks(keyword);
         if (matchingTasks.isEmpty()) {
             return "No matching tasks found.";

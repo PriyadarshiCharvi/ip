@@ -158,7 +158,8 @@ public class Ui {
     public void showMatchingTasks(List<Task> tasks) {
         showLine();
         if (tasks.isEmpty()) {
-            System.out.println("    No matching tasks found.");
+            System.out.println("OOPS! There are no tasks in the list. "
+                               + "Please add some tasks before trying to find them.");
         } else {
             System.out.println("    Here are the matching tasks in your list:");
             for (int i = 0; i < tasks.size(); i++) {
@@ -182,5 +183,16 @@ public class Ui {
      */
     public void close() {
         scanner.close();
+    }
+    /**
+     * Displays a message when a task is successfully snoozed.
+     *
+     * @param task The task that was postponed.
+     */
+    public void showSnoozedTask(Task task) {
+        showLine();
+        System.out.println("    Got it! The task has been postponed:");
+        System.out.println("    " + task);
+        showLine();
     }
 }

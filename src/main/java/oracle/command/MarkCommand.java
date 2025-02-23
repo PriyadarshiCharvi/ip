@@ -32,6 +32,10 @@ public class MarkCommand extends Command {
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws OracleException {
+        if (tasks.isEmpty()) {
+            throw new OracleException("OOPS! There are no tasks in the list yet. "
+                                      + "Please add a task first before marking it as complete.");
+        }
         Task task = tasks.getTask(index);
         task.markDone();
         storage.save(tasks.getTasks());
@@ -49,6 +53,10 @@ public class MarkCommand extends Command {
      */
     @Override
     public String executeForGui(TaskList tasks, Ui ui, Storage storage) throws OracleException {
+        if (tasks.isEmpty()) {
+            throw new OracleException("OOPS! There are no tasks in the list yet. "
+                                      + "Please add a task first before marking it as complete.");
+        }
         Task task = tasks.getTask(index);
         task.markDone();
         storage.save(tasks.getTasks());

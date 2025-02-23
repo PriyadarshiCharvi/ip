@@ -32,6 +32,10 @@ public class DeleteCommand extends Command {
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws OracleException {
+        if (tasks.isEmpty()) {
+            throw new OracleException("OOPS! There are no tasks in the list yet. "
+                                      + "Please add a task first before attempting to delete one.");
+        }
         Task removedTask = tasks.deleteTask(index);
         storage.save(tasks.getTasks());
         ui.showDeletedTask(removedTask, tasks.size());
@@ -48,6 +52,10 @@ public class DeleteCommand extends Command {
      */
     @Override
     public String executeForGui(TaskList tasks, Ui ui, Storage storage) throws OracleException {
+        if (tasks.isEmpty()) {
+            throw new OracleException("OOPS! There are no tasks in the list yet. "
+                                      + "Please add a task first before attempting to delete one.");
+        }
         Task removedTask = tasks.deleteTask(index);
         storage.save(tasks.getTasks());
         return "Removed task:\n" + removedTask + "\nNow you have " + tasks.size() + " tasks in the list.";

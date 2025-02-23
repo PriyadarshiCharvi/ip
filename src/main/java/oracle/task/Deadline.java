@@ -14,7 +14,7 @@ public class Deadline extends Task {
     private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMM d yyyy, hh:mma");
     private static final DateTimeFormatter STORAGE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
-    private final LocalDateTime by;
+    private LocalDateTime by;
     /**
      * Constructs a Deadline task with a description and a due date in string format.
      *
@@ -76,4 +76,14 @@ public class Deadline extends Task {
     public String toStorageString() {
         return by.format(STORAGE_FORMATTER);
     }
+
+    /**
+     * Reschedules the deadline to a new date.
+     *
+     * @param newDateTime The new due date and time.
+     */
+    public void reschedule(LocalDateTime newDateTime) {
+        this.by = newDateTime;
+    }
+
 }

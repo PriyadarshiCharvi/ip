@@ -7,6 +7,7 @@ import oracle.command.ExitCommand;
 import oracle.command.FindCommand;
 import oracle.command.ListCommand;
 import oracle.command.MarkCommand;
+import oracle.command.SnoozeCommand;
 import oracle.command.UnmarkCommand;
 import oracle.task.Deadline;
 import oracle.task.Event;
@@ -46,6 +47,8 @@ public class Parser {
             return parseUnmarkCommand(trimmedInput);
         case "find":
             return new FindCommand(trimmedInput.substring(5).trim());
+        case "snooze":
+            return parseSnoozeCommand(trimmedInput);
         default:
             throw new OracleException(
                     "OOPS!!! I'm sorry, but I don't know what that means :-(. Try something like 'todo assignment'."
@@ -182,6 +185,29 @@ public class Parser {
             return new UnmarkCommand(index);
         } catch (NumberFormatException e) {
             throw new OracleException("Please enter a valid task number.");
+        }
+    }
+
+    /**
+     * Parses a snooze command and returns a {@code SnoozeCommand}.
+     *
+     * @param input The user input string.
+     * @return A {@code SnoozeCommand} to postpone the task.
+     * @throws OracleException If the format is incorrect or the index is invalid.
+     */
+    private static Command parseSnoozeCommand(String input) throws OracleException {
+        String[] parts = input.split(" ", 3);
+        if (parts.length < 3) {
+            throw new OracleException("The correct format for snoozing a task is:\n"
+                    + "snooze [task number] [new date time]\n"
+                                      + "Example: snooze 2 5/12/2023 1800");
+        }
+        try {
+            int index = Integer.parseInt(parts[1]) - 1;
+            String newDateTime = parts[2].trim();
+            return new SnoozeCommand(index, newDateTime);
+        } catch (NumberFormatException e) {
+            throw new OracleException("Invalid task number. Use a valid integer.");
         }
     }
 }
