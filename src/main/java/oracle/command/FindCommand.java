@@ -1,6 +1,6 @@
 package oracle.command;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import oracle.common.Storage;
 import oracle.common.Ui;
@@ -32,7 +32,7 @@ public class FindCommand extends Command {
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
-        ArrayList<Task> matchingTasks = tasks.findTasks(keyword);
+        List<Task> matchingTasks = tasks.findTasks(keyword);
         ui.showMatchingTasks(matchingTasks);
     }
     /**
@@ -47,7 +47,7 @@ public class FindCommand extends Command {
      */
     @Override
     public String executeForGui(TaskList tasks, Ui ui, Storage storage) {
-        ArrayList<Task> matchingTasks = tasks.findTasks(keyword);
+        List<Task> matchingTasks = tasks.findTasks(keyword);
         if (matchingTasks.isEmpty()) {
             return "No matching tasks found.";
         }

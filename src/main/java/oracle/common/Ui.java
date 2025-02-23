@@ -98,7 +98,6 @@ public class Ui {
         showLine();
     }
 
-
     /**
      * Displays a message when a task is successfully added.
      *
