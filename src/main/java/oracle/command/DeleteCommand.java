@@ -53,12 +53,13 @@ public class DeleteCommand extends Command {
     @Override
     public String executeForGui(TaskList tasks, Ui ui, Storage storage) throws OracleException {
         if (tasks.isEmpty()) {
-            throw new OracleException("OOPS! There are no tasks in the list yet. "
+            throw new OracleException("\uD83C\uDF0C The cosmos is empty... You have no tasks in your list yet! "
                                       + "Please add a task first before attempting to delete one.");
         }
         Task removedTask = tasks.deleteTask(index);
         storage.save(tasks.getTasks());
-        return "Removed task:\n" + removedTask + "\nNow you have " + tasks.size() + " tasks in the list.";
+        return "☄\uFE0F The task has been obliterated into the void. Farewell, "
+               + removedTask + "\nNow you have " + tasks.size() + " tasks in the list.";
     }
 
 }

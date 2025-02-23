@@ -31,7 +31,8 @@ public class ExitCommand extends Command {
      */
     @Override
     public String executeForGui(TaskList tasks, Ui ui, Storage storage) {
-        return "Goodbye! Hope to see you again soon!";
+        return "\uD83D\uDE80 Goodbye! Your journey doesn’t end here, star seeker.\n"
+               + "Aim for the stars, and may the cosmos guide your way!";
     }
 
 

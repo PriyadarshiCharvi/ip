@@ -54,13 +54,13 @@ public class MarkCommand extends Command {
     @Override
     public String executeForGui(TaskList tasks, Ui ui, Storage storage) throws OracleException {
         if (tasks.isEmpty()) {
-            throw new OracleException("OOPS! There are no tasks in the list yet. "
+            throw new OracleException("\uD83C\uDF0C The cosmos is empty... You have no tasks in your list yet! "
                                       + "Please add a task first before marking it as complete.");
         }
         Task task = tasks.getTask(index);
         task.markDone();
         storage.save(tasks.getTasks());
-        return "Great! I've marked this task as done:\n" + task;
+        return "✨Task accomplished! Another star ignites in your constellation:\n" + task;
     }
 
 }

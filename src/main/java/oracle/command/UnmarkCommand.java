@@ -54,13 +54,13 @@ public class UnmarkCommand extends Command {
     @Override
     public String executeForGui(TaskList tasks, Ui ui, Storage storage) throws OracleException {
         if (tasks.isEmpty()) {
-            throw new OracleException("OOPS! There are no tasks in the list yet. "
+            throw new OracleException("\uD83C\uDF0C The cosmos is empty... You have no tasks in your list yet! "
                                       + "Please add a task first before marking it as incomplete.");
         }
         Task task = tasks.getTask(index);
         task.markUndone();
         storage.save(tasks.getTasks());
-        return "Alright! I've marked this task as not done yet:\n" + task;
+        return "\uD83D\uDD04 The task is undone, drifting once more in the cosmic expanse:\n" + task;
     }
 
 }

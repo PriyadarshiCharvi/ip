@@ -51,7 +51,8 @@ public class AddCommand extends Command {
     public String executeForGui(TaskList tasks, Ui ui, Storage storage) throws OracleException {
         tasks.addTask(task);
         storage.save(tasks.getTasks());
-        return "Added task:\n" + task + "\nNow you have " + tasks.size() + " tasks in the list.";
+        return "\uD83C\uDF20 A new task has been recorded in the cosmic logs:\n"
+               + task + "\nNow you have " + tasks.size() + " tasks in the list.";
     }
 
 }

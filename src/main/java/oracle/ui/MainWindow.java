@@ -41,6 +41,7 @@ public class MainWindow {
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        showWelcomeMessage();
     }
 
     /**
@@ -51,6 +52,16 @@ public class MainWindow {
     public void setOracle(Oracle oracle) {
         this.oracle = oracle;
     }
+
+    /**
+     * Displays the welcome message when the application starts.
+     */
+    private void showWelcomeMessage() {
+        String welcomeMessage = "🚀 Greetings, traveler! I am Oracle, your cosmic guide.\n"
+                                + "How may I chart your course today?";
+        addMessage(welcomeMessage, botImage, "bot");
+    }
+
 
     /**
      * Handles user input when the "Send" button is clicked or Enter is pressed.
