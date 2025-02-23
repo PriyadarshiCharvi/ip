@@ -196,4 +196,14 @@ public class Ui {
         System.out.println("    " + task);
         showLine();
     }
+    /**
+     * Displays the help message containing available commands.
+     *
+     * @param message The help message to display.
+     */
+    public void showHelpMessage(String message) {
+        showLine();
+        System.out.println("    " + message.replace("\n", "\n    "));
+        showLine();
+    }
 }
