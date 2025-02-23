@@ -73,9 +73,9 @@ public class Ui {
             System.out.println("    There are no tasks in your list yet.");
         } else {
             System.out.println("    Here are the tasks in your list:");
-            for (int i = 0; i < tasks.size(); i++) {
-                System.out.println("    " + (i + 1) + ". " + tasks.get(i));
-            }
+            tasks.stream()
+                    .map(task -> (tasks.indexOf(task) + 1) + ". " + task)
+                    .forEach(System.out::println);
         }
         showLine();
     }
