@@ -46,7 +46,8 @@ public class SnoozeCommand extends Command {
                                       + "Please add a deadline or event before trying to snooze.");
         }
         if (index < 0 || index >= tasks.size()) {
-            throw new OracleException("Invalid task number. Please enter a number between 1 and " + tasks.size());
+            throw new OracleException("That task isn’t in our star system! Please enter a number between 1 and "
+                                      + tasks.size());
         }
         Task task = tasks.getTask(index);
         LocalDateTime newDateTime = parseNewDateTime();
@@ -74,11 +75,12 @@ public class SnoozeCommand extends Command {
     @Override
     public String executeForGui(TaskList tasks, Ui ui, Storage storage) throws OracleException {
         if (tasks.isEmpty()) {
-            throw new OracleException("OOPS! There are no tasks in the list yet. "
+            throw new OracleException("\uD83C\uDF0C The cosmos is empty... You have no tasks in your list yet! "
                                       + "Please add a deadline or event before trying to snooze.");
         }
         execute(tasks, ui, storage);
-        return "Task successfully snoozed!\n" + tasks.getTask(index);
+        return "\uD83D\uDEF0\uFE0F Adjusting orbital trajectory… Your task has been rescheduled:\n"
+               + tasks.getTask(index);
     }
 
     private LocalDateTime parseNewDateTime() throws OracleException {

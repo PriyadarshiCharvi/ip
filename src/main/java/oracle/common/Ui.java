@@ -23,8 +23,8 @@ public class Ui {
      */
     public void showWelcome() {
         showLine();
-        System.out.println("    Hello! I'm Oracle");
-        System.out.println("    What can I do for you?");
+        System.out.println("    Greetings, traveler! I am Oracle, your cosmic guide.");
+        System.out.println("    How may I chart your course today?");
         showLine();
     }
 
@@ -174,7 +174,8 @@ public class Ui {
      */
     public void showGoodbye() {
         showLine();
-        System.out.println("    Goodbye. Hope to see you again soon!");
+        System.out.println("    Goodbye! Your journey doesn’t end here, star seeker.\n"
+                + "Aim for the stars, and may the cosmos guide your way!");
         showLine();
     }
 

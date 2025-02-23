@@ -32,9 +32,9 @@ public class ListCommand extends Command {
     @Override
     public String executeForGui(TaskList tasks, Ui ui, Storage storage) {
         if (tasks.isEmpty()) {
-            return "There are no tasks in your list yet.";
+            return "\uD83C\uDF0C The cosmos is empty... You have no tasks in your list yet!";
         }
-        StringBuilder response = new StringBuilder("Here are the tasks in your list:\n");
+        StringBuilder response = new StringBuilder("\uD83D\uDCDD Here are the tasks in your cosmic logs:\n");
         for (int i = 0; i < tasks.size(); i++) {
             response.append((i + 1)).append(". ").append(tasks.getTasks().get(i)).append("\n");
         }
