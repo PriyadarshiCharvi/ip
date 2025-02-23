@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import oracle.task.Deadline;
 import oracle.task.Event;
@@ -41,7 +42,7 @@ public class Storage {
         assert filePath != null : "File path should not be null";
         try {
             ensureFileExists();
-            return parseTasks(Files.readAllLines(filePath));
+            return (ArrayList<Task>) parseTasks(Files.readAllLines(filePath));
         } catch (IOException e) {
             throw new OracleException("Error loading tasks: " + e.getMessage());
         }
@@ -68,20 +69,20 @@ public class Storage {
      * @param lines The list of task entries read from the storage file.
      * @return A list of parsed tasks.
      */
-    private ArrayList<Task> parseTasks(List<String> lines) {
-        ArrayList<Task> tasks = new ArrayList<>();
-        for (String line : lines) {
-            try {
-                Task task = parseTask(line);
-                if (task != null) {
-                    tasks.add(task);
-                }
-            } catch (Exception e) {
-                System.err.println("Skipping corrupted entry: " + line);
-            }
-        }
-        return tasks;
+    private List<Task> parseTasks(List<String> lines) {
+        return lines.stream()
+                .map(line -> {
+                    try {
+                        return parseTask(line);
+                    } catch (Exception e) {
+                        System.err.println("Skipping corrupted entry: " + line);
+                        return null;
+                    }
+                })
+                .filter(task -> task != null)
+                .collect(Collectors.toList());
     }
+
 
     /**
      * Parses a single task entry from a string.
