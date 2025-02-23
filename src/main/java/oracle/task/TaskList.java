@@ -1,6 +1,8 @@
 package oracle.task;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import oracle.common.OracleException;
 
@@ -101,13 +103,10 @@ public class TaskList {
      * @param keyword The keyword to search for.
      * @return A list of tasks that contain the keyword.
      */
-    public ArrayList<Task> findTasks(String keyword) {
-        ArrayList<Task> matchingTasks = new ArrayList<>();
-        for (Task task : tasks) {
-            if (task.toString().toLowerCase().contains(keyword.toLowerCase())) {
-                matchingTasks.add(task);
-            }
-        }
-        return matchingTasks;
+    public List<Task> findTasks(String keyword) {
+        return tasks.stream()
+                .filter(task -> task.toString().toLowerCase().contains(keyword.toLowerCase()))
+                .collect(Collectors.toList());
     }
+
 }
