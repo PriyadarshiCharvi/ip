@@ -81,6 +81,25 @@ public class Ui {
     }
 
     /**
+     * Displays the list of tasks currently stored.
+     *
+     * @param tasks The list of tasks to display.
+     */
+    public void showTasks(Task... tasks) {
+        showLine();
+        if (tasks.length == 0) {
+            System.out.println("    There are no tasks in your list yet.");
+        } else {
+            System.out.println("    Here are the tasks in your list:");
+            for (int i = 0; i < tasks.length; i++) {
+                System.out.println("    " + (i + 1) + ". " + tasks[i]);
+            }
+        }
+        showLine();
+    }
+
+
+    /**
      * Displays a message when a task is successfully added.
      *
      * @param task The task that was added.
