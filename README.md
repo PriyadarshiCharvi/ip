@@ -3,6 +3,8 @@
 Welcome to **Oracle**, a chatbot designed to assist you with managing tasks efficiently.
 
 ---
+![alt text](docs/Ui.png)
+---
 
 ## **📖 Features**
 Oracle offers a range of features to help manage your tasks easily:
