@@ -7,55 +7,63 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import oracle.Oracle;
 
 /**
  * Controller class for the main chat window of the Oracle application.
- * This class handles the GUI interactions including displaying messages,
- * processing user input, and managing the chat interface.
+ * Handles GUI interactions, including message display, user input, and chat UI layout.
  */
 public class MainWindow {
     @FXML
     private VBox dialogContainer;
+    @FXML
+    private ScrollPane scrollPane;
     @FXML
     private TextField userInput;
     @FXML
     private Button sendButton;
 
     private Oracle oracle;
-    private Image userImage = new Image(getClass().getResourceAsStream("/view/ip-user.jpg"));
-    private Image botImage = new Image(getClass().getResourceAsStream("/view/ip-bot.jpg"));
+    private final Image userImage = new Image(getClass().getResourceAsStream("/view/ip-user.jpg"));
+    private final Image botImage = new Image(getClass().getResourceAsStream("/view/ip-bot.jpg"));
 
     /**
-     * Sets the Oracle instance that will process user commands and generate responses.
+     * Initializes the UI components and ensures automatic scrolling for chat.
+     */
+    @FXML
+    public void initialize() {
+        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+    }
+
+    /**
+     * Sets the Oracle instance for processing user commands and generating responses.
      *
-     * @param oracle The Oracle instance to be used for processing commands
+     * @param oracle The Oracle instance to use for command processing.
      */
     public void setOracle(Oracle oracle) {
         this.oracle = oracle;
     }
 
+    /**
+     * Handles user input when the "Send" button is clicked or Enter is pressed.
+     */
     @FXML
     private void handleUserInput() {
         String input = userInput.getText().trim();
         if (!input.isBlank()) {
             String response = oracle.getResponse(input);
-
-            // Add user message
             addMessage(input, userImage, "user");
-
-            // Add bot response
             addMessage(response, botImage, "bot");
 
             userInput.clear();
-
-            // If command is 'bye', close after 5 seconds
             if (input.equalsIgnoreCase("bye")) {
                 new Timer().schedule(new TimerTask() {
                     @Override
@@ -67,10 +75,19 @@ public class MainWindow {
         }
     }
 
+    /**
+     * Adds a chat message to the UI with proper text wrapping.
+     *
+     * @param text          The message text.
+     * @param profileImage  The profile image of the sender.
+     * @param sender        The sender type ("user" or "bot").
+     */
     private void addMessage(String text, Image profileImage, String sender) {
         HBox messageBox = new HBox(10);
         Label messageLabel = new Label(text);
         messageLabel.setWrapText(true);
+        messageLabel.setMaxWidth(250);
+        messageLabel.setMinHeight(Region.USE_PREF_SIZE);
         messageLabel.setStyle(sender.equals("user")
                 ? "-fx-background-color: #007AFF; -fx-text-fill: white; -fx-padding: 10; -fx-background-radius: 15;"
                 : "-fx-background-color: #34C759; -fx-text-fill: white; -fx-padding: 10; -fx-background-radius: 15;");
